@@ -3,13 +3,10 @@
 const { EventEmitter } = require('node:events');
 const path = require('node:path');
 const crypto = require('node:crypto');
-const os = require('node:os');
 
 const dataDirectory =
-  process.env.TAOBAO_INSTALL_DIR ||
-  process.env.TAOBAO_HOME ||
-  path.join(process.env.XDG_DATA_HOME || path.join(os.homedir(), '.local/share'), 'taobao-linux');
-const { MyAddon } = require(path.join(dataDirectory, 'build/security-bodyguard/my_addon.node'));
+  process.env.TAOBAO_INSTALL_DIR || process.env.TAOBAO_HOME || path.join(__dirname, '../build');
+const { MyAddon } = require(path.join(dataDirectory, 'native/security-bodyguard/my_addon.node'));
 
 class SecurityBodyguard extends EventEmitter {
   constructor(namespace) {

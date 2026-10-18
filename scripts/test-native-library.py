@@ -11,7 +11,7 @@ if os.environ.get("TAOBAO_TEST_SECRET_SERVICE") != "1":
     raise SystemExit("Run through scripts/test-security-addon.sh to isolate the keyring")
 
 data = Path(os.environ["TAOBAO_HOME"])
-library = ctypes.CDLL(str(data / "build/security-bodyguard/libtaobao-security-linux.so"))
+library = ctypes.CDLL(str(data / "native/security-bodyguard/libtaobao-security-linux.so"))
 library.tb_security_abi_version.restype = ctypes.c_uint
 library.tb_security_create.argtypes = [ctypes.c_char_p]
 library.tb_security_create.restype = ctypes.c_void_p

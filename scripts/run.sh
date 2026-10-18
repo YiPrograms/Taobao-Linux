@@ -13,9 +13,9 @@ for file in "$ELECTRON" "$APP_DIR/package.json" \
     fi
 done
 
-export XDG_CONFIG_HOME="$TAOBAO_HOME/state/config"
-export XDG_CACHE_HOME="$TAOBAO_HOME/state/cache"
-export XDG_DATA_HOME="$TAOBAO_HOME/state/data"
+export XDG_CONFIG_HOME="$TAOBAO_STATE_DIR/config"
+export XDG_CACHE_HOME="$TAOBAO_STATE_DIR/cache"
+export XDG_DATA_HOME="$TAOBAO_STATE_DIR/data"
 
 mkdir -p "$XDG_CONFIG_HOME" "$XDG_CACHE_HOME" "$XDG_DATA_HOME"
 

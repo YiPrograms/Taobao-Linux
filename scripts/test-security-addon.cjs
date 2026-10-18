@@ -9,7 +9,7 @@ const { spawnSync } = require('node:child_process');
 const crypto = require('node:crypto');
 const root = path.resolve(__dirname, '..');
 const dataDirectory = process.env.TAOBAO_HOME;
-const addonPath = path.join(dataDirectory, 'build/security-bodyguard/my_addon.node');
+const addonPath = path.join(dataDirectory, 'native/security-bodyguard/my_addon.node');
 const { MyAddon } = require(addonPath);
 
 if (process.env.TAOBAO_TEST_SECRET_SERVICE !== '1') {

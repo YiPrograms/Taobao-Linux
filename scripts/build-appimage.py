@@ -11,17 +11,16 @@ from pathlib import Path
 from download import download
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_DATA = Path(os.environ.get("XDG_DATA_HOME", Path.home() / ".local/share")) / "taobao-linux"
-DATA = Path(os.environ.get("TAOBAO_HOME", DEFAULT_DATA)).expanduser().resolve()
-WORK = DATA / "build/appimage"
+DATA = Path(os.environ.get("TAOBAO_HOME", ROOT / "build")).expanduser().resolve()
+WORK = DATA / "appimage"
 APPDIR = WORK / "Taobao.AppDir"
 PAYLOAD = APPDIR / "usr/share/taobao-linux"
 OUTPUT = Path(sys.argv[1] if len(sys.argv) > 1 else ROOT / "dist").resolve()
 
 
 def copy_native():
-    source = DATA / "build/security-bodyguard"
-    target = PAYLOAD / "build/security-bodyguard"
+    source = DATA / "native/security-bodyguard"
+    target = PAYLOAD / "native/security-bodyguard"
     target.mkdir(parents=True)
 
     for name in ["my_addon.node", "libtaobao-security-linux.so"]:
@@ -56,7 +55,7 @@ def create_appdir(version):
 
     for directory, pattern in [("native", "*.cjs"), ("scripts", "*.sh")]:
         destination = PAYLOAD / directory
-        destination.mkdir()
+        destination.mkdir(exist_ok=True)
         names = ["common.sh", "run.sh"] if directory == "scripts" else None
         for source in (ROOT / directory).glob(pattern):
             if names is None or source.name in names:

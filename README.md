@@ -61,29 +61,27 @@ python3 scripts/build-appimage.py
 The output is saved in `dist/` alongside `SHA256SUMS`. Packaging uses `file` and
 `desktop-file-validate` from `desktop-file-utils`.
 
-## Local data
+## Build files
 
-Application files, build outputs, logs, and the browser profile are stored in:
+Generated files are stored in the gitignored `build/` directory:
 
 ```text
-~/.local/share/taobao-linux/
+build/
 ├── app-src/       Extracted desktop client
-├── build/         Native binaries and build dependencies
+├── appimage/      AppImage staging files
 ├── extracted/     Installer contents
 ├── logs/          Test logs
+├── native/        Compiled native modules
 ├── runtime/       Linux Electron runtime
-├── state/         Browser profile and session data
+├── tools/         Build dependencies
 └── vendor/        Installer archives
 ```
 
-`XDG_DATA_HOME` changes the default base directory. `TAOBAO_HOME` selects an explicit location for
-all setup, build, launch, and test commands:
+Final AppImages and checksums are written to `dist/`.
 
-```sh
-export TAOBAO_HOME="$HOME/.local/share/taobao-linux"
-```
-
-Secret storage and the device identity use the desktop's Secret Service.
+Browser profiles and session data are stored in `~/.local/share/taobao-linux/state/`. `TAOBAO_HOME`
+overrides the build directory; `TAOBAO_STATE_DIR` overrides the profile directory. Secret storage
+uses the desktop's Secret Service.
 
 ## Architecture
 

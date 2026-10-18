@@ -15,11 +15,10 @@ from pathlib import Path
 from download import download
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_DATA = Path(os.environ.get("XDG_DATA_HOME", Path.home() / ".local/share")) / "taobao-linux"
-DATA = Path(os.environ.get("TAOBAO_HOME", DEFAULT_DATA)).expanduser().resolve()
-BUILD = DATA / "build/security-bodyguard"
-TOOLS = DATA / "build/objconv"
-LIBCXX = DATA / "build/libcxx"
+DATA = Path(os.environ.get("TAOBAO_HOME", ROOT / "build")).expanduser().resolve()
+BUILD = DATA / "native/security-bodyguard"
+TOOLS = DATA / "tools/objconv"
+LIBCXX = DATA / "tools/libcxx"
 APP = DATA / "app-src"
 FRAMEWORK = (
     APP / "node_modules/@ali/pc-security-bodyguard/bin/mac/SecurityGuardSDKMac.framework/Versions/A"

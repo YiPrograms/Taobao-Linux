@@ -1,0 +1,15 @@
+__pycache__/
+.ruff_cache/
+node_modules/
+dist/
+*.AppImage
+*.pyc
+*.core
+*.node
+*.so
+*.o
+*.a
+*.exe
+*.7z
+*.asar
+.DS_Store

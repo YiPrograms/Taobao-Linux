@@ -1,0 +1,66 @@
+name: Linux AppImage
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 40
+
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 24.3.0
+
+      - name: Install dependencies
+        run: |
+          curl -fsSL https://apt.llvm.org/llvm-snapshot.gpg.key |
+            sudo gpg --dearmor --yes -o /usr/share/keyrings/llvm.gpg
+          echo 'deb [signed-by=/usr/share/keyrings/llvm.gpg] https://apt.llvm.org/jammy/ llvm-toolchain-jammy-19 main' |
+            sudo tee /etc/apt/sources.list.d/llvm.list
+          sudo apt-get update
+          sudo apt-get install -y build-essential clang-19 llvm-19 libarchive-tools \
+            pkg-config libglib2.0-dev libsecret-1-dev nlohmann-json3-dev \
+            p7zip-full python3 dbus gnome-keyring desktop-file-utils file \
+            libgtk-3-0 libnss3 libasound2 libgbm1 libxss1
+          npm install --global node-gyp@13.1.0
+          echo "TAOBAO_HOME=$RUNNER_TEMP/taobao-linux" >> "$GITHUB_ENV"
+          echo '/usr/lib/llvm-19/bin' >> "$GITHUB_PATH"
+          echo "NODE_INCLUDE_DIR=$(node -p "require('node:path').resolve(process.execPath, '../../include/node')")" >> "$GITHUB_ENV"
+
+      - name: Prepare client
+        run: sh scripts/prepare.sh
+
+      - name: Build native modules
+        run: |
+          sh scripts/build-sqlite.sh
+          python3 scripts/build-security-addon.py
+
+      - name: Test native modules
+        run: sh scripts/test-security-addon.sh
+
+      - name: Build AppImage
+        run: python3 scripts/build-appimage.py
+
+      - name: Test AppImage
+        run: sh scripts/test-client-offline.sh "$GITHUB_WORKSPACE/dist/Taobao-3.0.0-x86_64.AppImage"
+
+      - name: Upload AppImage
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: Taobao-Linux-x86_64
+          path: |
+            dist/*.AppImage
+            dist/SHA256SUMS
+          compression-level: 0
+          if-no-files-found: error

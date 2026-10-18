@@ -1,0 +1,5 @@
+TAOBAO_SECURITY_1 {
+    global: tb_security_abi_version; tb_security_create; tb_security_destroy;
+            tb_security_request; tb_security_free;
+    local: *;
+};

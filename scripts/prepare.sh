@@ -7,14 +7,14 @@ INSTALLER=${1:-"$TAOBAO_HOME/vendor/taobao-setup-win-x64-3.0.0.exe"}
 ARCHIVE="$TAOBAO_HOME/vendor/app-64.7z"
 EXTRACTED="$TAOBAO_HOME/extracted"
 
-for tool in 7z node npm npx python3; do
+for tool in 7z node npm npx python3 curl; do
     command -v "$tool" >/dev/null || { echo "Required tool missing: $tool" >&2; exit 1; }
 done
 
 mkdir -p "$TAOBAO_HOME/vendor" "$EXTRACTED" "$TAOBAO_HOME/runtime"
 
 if [ ! -f "$ARCHIVE" ]; then
-    if [ ! -f "$INSTALLER" ] && [ "$#" -eq 0 ]; then
+    if [ "$#" -eq 0 ]; then
         python3 "$PROJECT_ROOT/scripts/download.py" \
             https://tblifecdn.taobao.com/taobaopc/shop/win10/taobao-setup-win-x64-3.0.0.exe \
             "$INSTALLER" \

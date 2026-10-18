@@ -31,11 +31,20 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y build-essential clang-19 llvm-19 libarchive-tools \
             pkg-config libglib2.0-dev libsecret-1-dev nlohmann-json3-dev \
-            p7zip-full python3 dbus gnome-keyring desktop-file-utils file \
+            p7zip-full python3 curl dbus gnome-keyring desktop-file-utils file \
             libgtk-3-0 libnss3 libasound2 libgbm1 libxss1
           npm install --global node-gyp@13.1.0
           echo '/usr/lib/llvm-19/bin' >> "$GITHUB_PATH"
           echo "NODE_INCLUDE_DIR=$(node -p "require('node:path').resolve(process.execPath, '../../include/node')")" >> "$GITHUB_ENV"
+
+      - name: Test downloads
+        run: python3 scripts/test-download.py
+
+      - name: Cache installer
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: build/vendor/taobao-setup-win-x64-3.0.0.exe
+          key: taobao-installer-${{ hashFiles('scripts/prepare.sh') }}
 
       - name: Prepare client
         run: sh scripts/prepare.sh

@@ -69,7 +69,7 @@ installer, then combines them with Linux Electron and the native modules built f
 - Python 3.10 or later
 - GCC with C++17 support, Clang, and LLVM 19 tools (`llvm-lipo`, `llvm-ar`, and `llvm-nm`)
 - Node.js headers, GLib, libsecret, and nlohmann/json
-- 7-Zip, libarchive tools, pkg-config, and node-gyp
+- curl, 7-Zip, libarchive tools, pkg-config, and node-gyp
 - `file` and `desktop-file-utils` for AppImage packaging
 
 On Debian or Ubuntu, enable the [LLVM package repository](https://apt.llvm.org/) for LLVM 19
@@ -79,7 +79,7 @@ and install the build packages:
 sudo apt install build-essential clang-19 llvm-19 llvm-19-tools \
   libarchive-tools pkg-config libglib2.0-dev libsecret-1-dev \
   libnode-dev nlohmann-json3-dev p7zip-full python3 \
-  desktop-file-utils file git
+  desktop-file-utils file git curl
 npm install --global node-gyp@13.1.0
 ```
 
